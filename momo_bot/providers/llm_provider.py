@@ -2,41 +2,62 @@ import litellm
 import os
 
 class UniversalProvider:
-    """Wrapper class sử dụng LiteLLM để tự động Fallback (Dự phòng) giữa OpenAI và Gemini."""
-    
+    """LiteLLM wrapper hỗ trợ OpenRouter, OpenAI, Gemini với tự động fallback."""
+
     def __init__(self):
-        # Danh sách mô hình theo thứ tự ưu tiên. Nếu cái 1 lỗi (hết hạn mức), sẽ tự nhảy sang cái 2.
-        self.models = []
-        if os.getenv("OPENAI_API_KEY"):
-            self.models.append("gpt-4o-mini")
-        if os.getenv("GEMINI_API_KEY"):
-            self.models.append("gemini/gemini-2.5-flash")
-            
+        self.models = []  # list of dict: {model, api_key, api_base}
+
+        openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+        openai_key     = os.getenv("OPENAI_API_KEY", "").strip()
+        gemini_key     = os.getenv("GEMINI_API_KEY", "").strip()
+
+        # OpenAI — ưu tiên 1 (đã verify hoạt động)
+        if openai_key:
+            self.models.append({
+                "model":    "gpt-4o-mini",
+                "api_key":  openai_key,
+                "api_base": None,
+            })
+
+        # OpenRouter — ưu tiên 2 (cần có credit)
+        if openrouter_key:
+            self.models.append({
+                "model":    "openrouter/google/gemini-2.5-flash",
+                "api_key":  openrouter_key,
+                "api_base": None,
+            })
+
+        # Gemini direct — ưu tiên 3
+        if gemini_key:
+            self.models.append({
+                "model":    "gemini/gemini-2.5-flash",
+                "api_key":  gemini_key,
+                "api_base": None,
+            })
+
     def generate_response(self, messages: list, tools: list = None):
-        """
-        Gửi message tới LLM, tự động chuyển đổi mô hình nếu gặp lỗi (Rate Limit).
-        """
         if not self.models:
             raise Exception("Không có API Key nào được cấu hình!")
-            
-        for model in self.models:
+
+        for cfg in self.models:
             try:
-                # Trích xuất đúng API Key tương ứng với model và loại bỏ khoảng trắng thừa
-                api_key = os.getenv("OPENAI_API_KEY") if "gpt" in model else os.getenv("GEMINI_API_KEY")
-                if api_key:
-                    api_key = api_key.strip()
-                    
-                response = litellm.completion(
-                    model=model,
+                kwargs = dict(
+                    model=cfg["model"],
                     messages=messages,
                     tools=tools if tools else None,
                     temperature=0.0,
-                    api_key=api_key
+                    api_key=cfg["api_key"],
                 )
-                print(f"⚡ [Đã dùng model]: {model}")
+                if cfg["api_base"]:
+                    kwargs["api_base"] = cfg["api_base"]
+
+                response = litellm.completion(**kwargs)
+                print(f"⚡ [Model]: {cfg['model']}")
                 return response
+
             except Exception as e:
-                print(f"\n⚠️ [CẢNH BÁO]: Model {model} thất bại (Lý do: {str(e)}). Đang chuyển sang model dự phòng...")
+                print(f"\n⚠️ [CẢNH BÁO]: Model {cfg['model']} thất bại "
+                      f"(Lý do: {str(e)[:120]}). Đang thử model tiếp theo...")
                 continue
-                
-        raise Exception("Tất cả các LLM đều bị lỗi hoặc đã hết hạn mức!")
+
+        raise Exception("Tất cả các model đều bị lỗi hoặc hết hạn mức!")
