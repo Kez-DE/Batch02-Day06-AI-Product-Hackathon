@@ -87,7 +87,15 @@ def safety_check(phone_number: str, amount: int = 0) -> str:
             "next_action": "abort_and_alert"
         }, ensure_ascii=False)
 
-    recipient_name = contact["full_name"] if contact else "Không xác định"
+    if not contact:
+        return json.dumps({
+            "safe": True,
+            "recipient_name": "Không xác định",
+            "message": "Số điện thoại hợp lệ nhưng chưa tìm thấy tên người nhận. Có thể mở màn hình chuyển tiền để người dùng kiểm tra lại trước khi xác nhận.",
+            "next_action": "call_execute_momo_transfer"
+        }, ensure_ascii=False)
+
+    recipient_name = contact["full_name"]
     return json.dumps({
         "safe": True,
         "recipient_name": recipient_name,

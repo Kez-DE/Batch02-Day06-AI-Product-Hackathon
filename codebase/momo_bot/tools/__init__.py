@@ -3,10 +3,12 @@ from .safety_check import safety_check
 from .momo_next_action import execute_momo_transfer
 from .classify_intent import classify_intent
 from .personal_phonebook import lookup_personal_contact
+from .phone_lookup import lookup_phone_number
 
 # Danh sách các tool function
 AGENT_TOOLS = [
     lookup_personal_contact,
+    lookup_phone_number,
     clarify_contact,
     safety_check,
     execute_momo_transfer,
@@ -26,6 +28,20 @@ TOOL_SCHEMAS = [
                     "name_hint": {"type": "string", "description": "Tên, biệt danh hoặc quan hệ người dùng nhắc tới (ví dụ: 'mẹ', 'vợ', 'con trai')."}
                 },
                 "required": ["name_hint"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "lookup_phone_number",
+            "description": "Tra cứu chủ sở hữu của một số điện thoại cụ thể trong dữ liệu MoMo và danh bạ cá nhân. Ưu tiên dùng công cụ này khi người dùng hỏi 'số này của ai' hoặc đưa trực tiếp một số điện thoại để kiểm tra tên người nhận.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "phone_number": {"type": "string", "description": "Số điện thoại cần tra cứu (vd: '0810582367')."}
+                },
+                "required": ["phone_number"]
             }
         }
     },
