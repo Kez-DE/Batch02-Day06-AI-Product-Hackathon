@@ -1,7 +1,19 @@
 import streamlit as st
 import sys, os, json, re
+import base64, mimetypes
+from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+APP_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = APP_DIR.parents[1]
+TRANSFER_UI_DIR = PROJECT_ROOT / "transfer_UI"
+
+
+def query_param_is(name: str, expected: str) -> bool:
+    value = st.query_params.get(name)
+    if isinstance(value, list):
+        return expected in value
+    return value == expected
 
 st.set_page_config(
     page_title="Trợ thủ AI – Moni",
@@ -430,6 +442,14 @@ if "messages" not in st.session_state:
 if "pending_deeplink" not in st.session_state:
     st.session_state.pending_deeplink = None
 
+if query_param_is("transfer_done", "1"):
+    st.session_state.messages = []
+    st.session_state.pending_deeplink = None
+    if "agent" in st.session_state:
+        del st.session_state["agent"]
+    st.query_params.clear()
+    st.rerun()
+
 if not st.session_state.get("initialized"):
     st.markdown("""
 <div style="margin:20px;background:rgba(255,255,255,.85);
@@ -459,6 +479,62 @@ def get_last_deeplink(agent: MoniAgent) -> dict | None:
             except Exception:
                 pass
     return None
+
+
+def _asset_data_uri(path: Path) -> str:
+    mime_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+    encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:{mime_type};base64,{encoded}"
+
+
+def render_transfer_flow(data: dict):
+    if not TRANSFER_UI_DIR.exists():
+        st.error("Không tìm thấy giao diện transfer_UI.")
+        return
+
+    index_path = TRANSFER_UI_DIR / "index.html"
+    css_path = TRANSFER_UI_DIR / "css" / "main.css"
+    html = index_path.read_text(encoding="utf-8")
+    css = css_path.read_text(encoding="utf-8")
+
+    def inline_css_asset(match: re.Match) -> str:
+        asset_path = (css_path.parent / match.group(1)).resolve()
+        if not asset_path.exists():
+            return "none"
+        return f'url("{_asset_data_uri(asset_path)}")'
+
+    css = re.sub(r'url\(["\']?(\.\./images/[^)"\']+)["\']?\)', inline_css_asset, css)
+    html = re.sub(
+        r'<link href="\./css/main\.css" rel="stylesheet"\s*/?>',
+        f"<style>{css}</style>",
+        html,
+    )
+
+    deeplink = data.get("deeplink", "")
+    phone_match = re.search(r"phone=([^&]+)", deeplink)
+    amount_match = re.search(r"amount=(\d+)", deeplink)
+    phone = phone_match.group(1) if phone_match else "09xxxxxxxx"
+    amount = f"{int(amount_match.group(1)):,}d" if amount_match else ""
+    recipient_name = data.get("recipient_name") or "Someone"
+
+    html = html.replace("09xxxxxxxx", phone)
+    html = html.replace("Someone", recipient_name)
+    if amount:
+        html = html.replace("50.000d", amount, 1)
+
+    html = re.sub(r"</?(?:!doctype|html|head|body)[^>]*>", "", html, flags=re.IGNORECASE)
+    html = html.replace("<title>Document</title>", "")
+
+    st.markdown(html, unsafe_allow_html=True)
+    st.markdown('<div style="padding:12px 18px 28px;">', unsafe_allow_html=True)
+    if st.button("Hoàn thành giao dịch", key="complete_transfer", use_container_width=True):
+        st.session_state.messages = []
+        st.session_state.pending_deeplink = None
+        if "agent" in st.session_state:
+            del st.session_state["agent"]
+        st.query_params.clear()
+        st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def render_deeplink_card(data: dict):
@@ -504,7 +580,7 @@ def render_deeplink_card(data: dict):
 
   <!-- Body -->
   <div style="padding:16px 20px 18px;">
-    <a href="https://www.momo.vn/" target="_blank" rel="noopener noreferrer" style="
+    <a href="?transfer=1" target="_self" style="
         display:flex;align-items:center;justify-content:center;gap:8px;
         background:linear-gradient(135deg,#F02891,#8B5CF6);
         color:#fff;text-decoration:none;
@@ -538,6 +614,24 @@ def render_warning(text: str):
   <span>{text}</span>
 </div>
 """, unsafe_allow_html=True)
+
+
+def get_current_transfer_payload() -> dict | None:
+    if st.session_state.pending_deeplink:
+        return st.session_state.pending_deeplink
+    for msg in reversed(st.session_state.messages):
+        if msg.get("deeplink"):
+            return msg["deeplink"]
+    return None
+
+
+if query_param_is("transfer", "1"):
+    transfer_payload = get_current_transfer_payload()
+    if transfer_payload:
+        render_transfer_flow(transfer_payload)
+    else:
+        st.warning("Chưa có giao dịch chuyển tiền để hiển thị.")
+    st.stop()
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -655,6 +749,7 @@ if message_text:
 
         deeplink_data = get_last_deeplink(agent)
         if deeplink_data:
+            st.session_state.pending_deeplink = deeplink_data
             render_deeplink_card(deeplink_data)
 
         warning_kw = ["cảnh báo", "danh sách đen", "lừa đảo", "bị khóa", "rủi ro cao"]
