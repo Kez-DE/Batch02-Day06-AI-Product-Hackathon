@@ -9,6 +9,8 @@ class UniversalProvider:
         self.models = []
         if os.getenv("OPENAI_API_KEY"):
             self.models.append("gpt-4o-mini")
+        if os.getenv("OPENROUTER_API_KEY"):
+            self.models.append("openrouter/meta-llama/llama-3-8b-instruct:free")
         if os.getenv("GEMINI_API_KEY"):
             self.models.append("gemini/gemini-2.5-flash")
             
@@ -21,8 +23,15 @@ class UniversalProvider:
             
         for model in self.models:
             try:
-                # Trích xuất đúng API Key tương ứng với model và loại bỏ khoảng trắng thừa
-                api_key = os.getenv("OPENAI_API_KEY") if "gpt" in model else os.getenv("GEMINI_API_KEY")
+                # Trích xuất đúng API Key tương ứng với model
+                api_key = None
+                if "openrouter" in model:
+                    api_key = os.getenv("OPENROUTER_API_KEY")
+                elif "gpt" in model and "openrouter" not in model:
+                    api_key = os.getenv("OPENAI_API_KEY")
+                else:
+                    api_key = os.getenv("GEMINI_API_KEY")
+                    
                 if api_key:
                     api_key = api_key.strip()
                     

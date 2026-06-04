@@ -1,7 +1,18 @@
 import json
 import os
+import logging
 from providers.llm_provider import UniversalProvider
 from tools import AGENT_TOOLS, TOOL_SCHEMAS
+
+# Cấu hình logging
+os.makedirs("logs", exist_ok=True)
+logging.basicConfig(
+    filename=os.path.join("logs", "ai_agent.log"),
+    level=logging.INFO,
+    format="%(asctime)s - [%(levelname)s] - %(message)s",
+    encoding="utf-8"
+)
+logger = logging.getLogger("MoniAgent")
 
 class MoniAgent:
     def __init__(self):
@@ -23,6 +34,7 @@ class MoniAgent:
         """
         Gửi tin nhắn cho LLM và xử lý luồng Function Calling.
         """
+        logger.info(f"👤 USER INPUT: {user_message}")
         try:
             self.messages.append({"role": "user", "content": user_message})
 
@@ -43,7 +55,9 @@ class MoniAgent:
 
                 # Kiểm tra xem LLM có yêu cầu gọi tool nào không
                 if not message.tool_calls:
-                    return message.content or "Mình chưa tạo được phản hồi cuối cùng. Bạn thử nói rõ hơn giúp mình nhé."
+                    final_response = message.content or "Mình chưa tạo được phản hồi cuối cùng. Bạn thử nói rõ hơn giúp mình nhé."
+                    logger.info(f"🤖 AI RESPONSE: {final_response}")
+                    return final_response
 
                 for tool_call in message.tool_calls:
                     name = tool_call.function.name
@@ -52,11 +66,13 @@ class MoniAgent:
                     
                     # Log ra terminal để dễ debug (Developer Mode)
                     print(f"\n[🔧 AI ĐANG GỌI TOOL]: {name}({args})")
+                    logger.info(f"🔧 TOOL CALL: {name}({args})")
                     
                     if name in function_map:
                         tool_func = function_map[name]
                         # Thực thi tool
                         tool_result = tool_func(**args)
+                        logger.info(f"✅ TOOL RESULT: {tool_result}")
                         
                         # Trả lại kết quả của tool cho LLM để nó biết kết quả
                         self.messages.append({
@@ -66,7 +82,9 @@ class MoniAgent:
                             "content": str(tool_result)
                         })
 
+            logger.warning("⚠️ AI chưa chốt được phản hồi sau nhiều bước xử lý.")
             return "Mình đã xử lý nhiều bước nhưng chưa chốt được phản hồi cuối cùng. Bạn thử lại với yêu cầu ngắn hơn nhé."
 
         except Exception as e:
+            logger.error(f"❌ SYSTEM ERROR: {str(e)}")
             return f"❌ [Lỗi Hệ Thống]: {str(e)}"
