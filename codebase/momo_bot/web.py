@@ -503,7 +503,7 @@ def render_deeplink_card(data: dict):
 
   <!-- Body -->
   <div style="padding:16px 20px 18px;">
-    <a href="{deeplink}" style="
+    <a href="https://www.momo.vn/" target="_blank" rel="noopener noreferrer" style="
         display:flex;align-items:center;justify-content:center;gap:8px;
         background:linear-gradient(135deg,#F02891,#8B5CF6);
         color:#fff;text-decoration:none;
@@ -521,8 +521,6 @@ def render_deeplink_card(data: dict):
 </div>
 """, unsafe_allow_html=True)
 
-    with st.expander("🔗 Xem deeplink"):
-        st.code(deeplink, language=None)
 
 
 def render_warning(text: str):
