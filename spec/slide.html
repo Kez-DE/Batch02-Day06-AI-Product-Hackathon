@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>Demo Slide - Nhóm F2 - MoMo Moni Optimization</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css"
+    />
+
+    <style>
+      :root {
+        --momo-pink: #b0006d;
+        --text-grey: #b3b3b3;
+      }
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        font-family: "Inter", sans-serif;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      .highlight {
+        color: var(--momo-pink);
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: center;
+      }
+      .badge-fail {
+        background-color: #ff4d4d;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.6em;
+        font-weight: bold;
+      }
+      .badge-success {
+        background-color: #2ecc71;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.6em;
+        font-weight: bold;
+      }
+      ul {
+        font-size: 0.8em;
+        line-height: 1.6;
+        color: #e0e0e0;
+      }
+      .source-note {
+        font-size: 0.4em !important;
+        color: var(--text-grey);
+        margin-top: 20px !important;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-background-gradient="linear-gradient(to bottom, #111, #b0006d 400%)"
+        >
+          <h3>Tối ưu Trải nghiệm Trợ lý ảo Moni</h3>
+          <h2 class="highlight" style="font-size: 1.5em">
+            Luồng Chuyển Tiền Thông Minh
+          </h2>
+          <p style="font-size: 0.8em; margin-top: 50px">
+            Nhóm Thực Hiện: <span class="highlight">F2</span>
+          </p>
+          <p style="font-size: 0.5em; color: var(--text-grey)">
+            Track: Personal Finance
+          </p>
+        </section>
+
+        <section>
+          <h2>1. Bằng chứng nghiên cứu</h2>
+          <div class="grid-2">
+            <div>
+              <p class="badge-fail">Self-Use & Lỗi Thực Tế</p>
+              <ul>
+                <li>
+                  Lệnh đầy đủ: Trả về
+                  <span class="highlight">wall of text</span> hướng dẫn tĩnh,
+                  bắt user tự thoát chat ra làm lại từ đầu.
+                </li>
+                <li>
+                  Lệnh mơ hồ: Nhập
+                  <span class="highlight">"chuyển tiền cho mẹ"</span> -> AI hiểu
+                  sai sang luồng <i>Ghi chép chi tiêu</i> thay vì giao dịch.
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p class="badge-fail">Rào cản người cao tuổi</p>
+              <ul>
+                <li>
+                  Mắt kém, ngại ghi nhớ luồng giao diện phức tạp nhiều nút bấm.
+                </li>
+                <li>
+                  Kỳ vọng đọc lệnh là chạy, nhưng việc AI hiện chữ hướng dẫn dài
+                  dòng tạo ra <b>gánh nặng nhận thức lớn</b>, làm họ bỏ cuộc.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p class="source-note">
+            *Bằng chứng trích xuất trực tiếp từ Case-study thực tế trên app MoMo
+            Moni.
+          </p>
+        </section>
+
+        <section>
+          <img src="moni_scr.jpg" alt="Moni Screen 1" style="
+            height: 100%;
+            max-height: 85vh; /* Giới hạn chiều cao ảnh chiếm tối đa 85% màn hình để chừa lề top/bottom */
+            width: auto;      /* Tự động co giãn chiều rộng theo đúng tỷ lệ ảnh gốc, không bị méo hình */
+            object-fit: contain;
+            border-radius: 12px; /* Bo góc nhẹ cho giống viền điện thoại thật */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); /* Tạo bóng đổ cho ảnh nổi bật */
+          ">
+
+          <img src="moni_scr_2.jpg" alt="Moni Screen 2" style="
+            height: 100%;
+            max-height: 85vh;
+            width: auto;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+          ">
+                </section>
+
+        <section data-transition="zoom">
+          <h2>2. Lát Cắt Để Build (Build Slice)</h2>
+          <div
+            style="
+              background: #222;
+              padding: 30px;
+              border-left: 8px solid var(--momo-pink);
+              border-radius: 8px;
+              text-align: left;
+            "
+          >
+            <p style="font-size: 0.9em; margin: 0">
+              Cho <b>người dùng bận rộn và người già mắt kém</b> thực hiện tác
+              vụ <b>ra lệnh chuyển tiền bằng một câu thoại tự nhiên</b>, AI sẽ
+              quyết định bóc tách thực thể số điện thoại/danh xưng để gọi công
+              cụ điều hướng ngầm (<span class="highlight"
+                >trigger_app_deep_link</span
+              >), trả về kết quả là
+              <b>Màn hình nháp giao dịch điền sẵn 100% thông tin người nhận</b>,
+              chỉ chờ user nhập tiền.
+            </p>
+          </div>
+        </section>
+        <section>
+          <img src="transfer_money.jpg" alt="Moni Transfer Money" style="
+            height: 100%;
+            max-height: 90vh;    /* Ảnh chiếm tối đa 90% chiều cao màn hình trình chiếu */
+            width: auto;         /* Tự động tính chiều rộng theo đúng tỷ lệ gốc để không bị méo hình */
+            object-fit: contain;
+            border-radius: 16px; /* Bo viền góc mượt mà giống phom điện thoại thật */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); /* Tạo bóng đổ sâu giúp mockup nổi khối hẳn lên */
+          " />
+        </section>
+        <section>
+          <h2>3. AI Product Canvas</h2>
+          <table style="font-size: 0.55em; width: 100%">
+            <thead>
+              <tr style="background: var(--momo-pink)">
+                <th style="width: 25%">Value (Giá trị)</th>
+                <th style="width: 25%">Trust (Niềm tin)</th>
+                <th style="width: 25%">Feasibility (Khả thi)</th>
+                <th style="width: 25%">Tín hiệu học</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="vertical-align: top; background: #222">
+                  Chuyển dịch từ Hỏi-đáp thông tin sang <b>Thực thi tác vụ</b>.
+                  Cắt giảm 4 thao tác bấm tay cho người già và người bận rộn.
+                </td>
+                <td style="vertical-align: top; background: #222">
+                  Người dùng nhìn thấy tên người nhận hiển thị to rõ trên giao diện nháp bị sai, hoặc AI hiện cảnh báo số điện thoại chưa kích hoạt ví.
+                </td>
+                <td style="vertical-align: top; background: #222">
+                  CỨng dụng chạy mô hình ReAct hẹp bóc tách Regex ngay tại Local, chi phí gọi API tối thiểu, độ trễ xử lý dữ liệu dưới 1 giây (đảm bảo trải nghiệm tức thì).
+                </td>
+                <td style="vertical-align: top; background: #222">
+                  Hành vi đính chính lưu vào
+                  <b>Local Cache của phiên chat</b> để Context-learning ghi nhớ
+                  mối quan hệ Alias cho lần sau.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>4. Augment hay Automate?</h2>
+          <h4 class="highlight">Quyết định: AI Tăng Cường (Augmentation)</h4>
+          <div class="grid-2" style="margin-top: 30px">
+            <div style="background: #222; padding: 20px; border-radius: 8px">
+              <p
+                style="
+                  font-size: 0.8em;
+                  font-weight: bold;
+                  color: var(--momo-pink);
+                "
+              >
+                AI "Dọn Đường" Hành Động
+              </p>
+              <p style="font-size: 0.65em; text-align: left">
+                Bóc tách dữ liệu, đối chiếu danh tính hệ thống, tự động bật
+                Deep-link và điền sẵn biểu mẫu giao dịch.
+              </p>
+            </div>
+            <div style="background: #222; padding: 20px; border-radius: 8px">
+              <p style="font-size: 0.8em; font-weight: bold; color: #2ecc71">
+                Con Người Duyệt Cuối
+              </p>
+              <p style="font-size: 0.65em; text-align: left">
+                Kiểm tra lại tên người nhận hiển thị to rõ, tự tay điền số tiền
+                cần chuyển và thực hiện bảo mật (FaceID/Mật khẩu).
+              </p>
+            </div>
+          </div>
+          <p
+            style="font-size: 0.6em; margin-top: 30px; color: var(--text-grey)"
+          >
+            <i
+              >Lý do: Giao dịch tài chính có rủi ro rất cao, không được phép tự
+              động hóa hoàn toàn.</i
+            >
+          </p>
+        </section>
+
+        <section>
+          <h2>5. Thiết kế 4 Luồng Trải Nghiệm</h2>
+          <div style="font-size: 0.65em">
+            <p style="text-align: left">
+              <span class="badge-success">Happy Path</span> Lệnh đầy đủ
+              -> Gọi Deep-link nhảy thẳng vào màn hình nháp điền sẵn
+              thông tin trong 400ms.
+            </p>
+            <p style="text-align: left; margin-top: 15px">
+              <span class="badge-success" style="background-color: #f1c40f"
+                >Low-Confidence</span
+              >
+              Lệnh mơ hồ <i>"Chuyển tiền cho mẹ"</i> -> Hiện ngay 2
+              nút gợi ý tương tác nhanh <code>[Mẹ]</code> hoặc
+              <code>[Mẹ vợ]</code>.
+            </p>
+            <p style="text-align: left; margin-top: 15px">
+              <span class="badge-fail">Failure Path</span> SĐT sai/chưa đăng ký
+              ví -> Hiện thông báo lỗi trực quan</code>.
+            </p>
+            <p style="text-align: left; margin-top: 15px">
+              <span class="badge-success" style="background-color: #9b59b6"
+                >Correction Path</span
+              >
+              User đính chính bằng cách chạm nút gợi ý -> Cache lưu
+              lại làm tín hiệu học ngữ cảnh cho phiên sau.
+            </p>
+          </div>
+        </section>
+
+        <section
+          data-background-gradient="linear-gradient(to bottom, #111, #222)"
+        >
+          <h2>6. Kịch Bản Kiểm Thử & Demo</h2>
+          <div class="grid-2">
+            <div style="text-align: left">
+              <p
+                style="
+                  font-size: 0.75em;
+                  font-weight: bold;
+                  color: var(--momo-pink);
+                "
+              >
+                Test Case 1: Đường Thuận
+              </p>
+              <p style="font-size: 0.6em; color: var(--text-grey)">
+                Input: <i>"Tôi muốn chuyển tiền tới momo 0936768999"</i>
+              </p>
+              <p style="font-size: 0.6em">
+                -> Hệ thống tự chuyển cảnh, điền sẵn thông tin nhận:
+                <b>Mỹ Gia Hiếu</b>.
+              </p>
+            </div>
+            <div style="text-align: left">
+              <p style="font-size: 0.75em; font-weight: bold; color: #f1c40f">
+                Test Case 2: Luồng Gây Nhiễu
+              </p>
+              <p style="font-size: 0.6em; color: var(--text-grey)">
+                Input: <i>"Chuyển tiền cho mẹ"</i>
+              </p>
+              <p style="font-size: 0.6em">
+                -> Hệ thống kích hoạt cơ chế hỏi lại, xuất hiện cụm
+                nút bấm chọn nhanh danh tính.
+              </p>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+      // Khởi tạo Reveal.js cấu hình điều hướng mượt mà cho buổi Demo
+      Reveal.initialize({
+        hash: true,
+        controls: true,
+        progress: true,
+        center: true,
+        transition: "slide", // Hiệu ứng lướt slide chuyên nghiệp
+      });
+    </script>
+  </body>
+</html>
