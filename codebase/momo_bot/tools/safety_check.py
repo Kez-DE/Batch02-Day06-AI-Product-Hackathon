@@ -89,10 +89,9 @@ def safety_check(phone_number: str, amount: int = 0) -> str:
 
     if not contact:
         return json.dumps({
-            "safe": True,
-            "recipient_name": "Không xác định",
-            "message": "Số điện thoại hợp lệ nhưng chưa tìm thấy tên người nhận. Có thể mở màn hình chuyển tiền để người dùng kiểm tra lại trước khi xác nhận.",
-            "next_action": "call_execute_momo_transfer"
+            "safe": False,
+            "reason": f"Số điện thoại {phone_number} không tồn tại trong hệ thống MoMo hoặc danh bạ. Không thể thực hiện giao dịch.",
+            "next_action": "abort_and_alert"
         }, ensure_ascii=False)
 
     recipient_name = contact["full_name"]

@@ -29,8 +29,15 @@ def execute_momo_transfer(phone_number: str, amount: int = None) -> str:
         deeplink += f"&amount={amount}"
 
     contact = _PHONE_INDEX.get(phone_number)
+    if not contact:
+        return json.dumps({
+            "status": "error",
+            "action": "abort_and_alert",
+            "phone_number": phone_number,
+            "message_to_user": f"Số điện thoại {phone_number} không tồn tại trong hệ thống MoMo hoặc danh bạ. Mình không thể tạo giao dịch chuyển tiền cho số này."
+        }, ensure_ascii=False)
+
     recipient_name = contact["full_name"] if contact else "Không xác định"
-    recipient_display = recipient_name if contact else f"số {phone_number}"
 
     return json.dumps({
         "status": "success",
@@ -38,5 +45,5 @@ def execute_momo_transfer(phone_number: str, amount: int = None) -> str:
         "deeplink": deeplink,
         "recipient_name": recipient_name,
         "phone_number": phone_number,
-        "message_to_user": f"Đang mở màn hình chuyển tiền MoMo tới {recipient_display}..."
+        "message_to_user": f"Đang mở màn hình chuyển tiền MoMo tới {recipient_name}..."
     }, ensure_ascii=False)
