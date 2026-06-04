@@ -2,6 +2,7 @@ import streamlit as st
 import sys, os, json, re
 import base64, mimetypes
 from pathlib import Path
+from urllib.parse import urlencode
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 APP_DIR = Path(__file__).resolve().parent
@@ -14,6 +15,13 @@ def query_param_is(name: str, expected: str) -> bool:
     if isinstance(value, list):
         return expected in value
     return value == expected
+
+
+def query_param_value(name: str, default: str = "") -> str:
+    value = st.query_params.get(name)
+    if isinstance(value, list):
+        return value[0] if value else default
+    return value or default
 
 st.set_page_config(
     page_title="Trợ thủ AI – Moni",
@@ -481,6 +489,40 @@ def get_last_deeplink(agent: MoniAgent) -> dict | None:
     return None
 
 
+def extract_transfer_params(data: dict) -> dict:
+    deeplink = data.get("deeplink", "")
+    phone_match = re.search(r"phone=([^&]+)", deeplink)
+    amount_match = re.search(r"amount=(\d+)", deeplink)
+    return {
+        "name": data.get("recipient_name") or data.get("name") or "Someone",
+        "phone": data.get("phone_number") or data.get("phone") or (phone_match.group(1) if phone_match else "09xxxxxxxx"),
+        "amount": str(data.get("amount") or (amount_match.group(1) if amount_match else "")),
+    }
+
+
+def open_transfer_flow(data: dict):
+    params = extract_transfer_params(data)
+    st.query_params.clear()
+    st.query_params["transfer"] = "1"
+    st.query_params["name"] = params["name"]
+    st.query_params["phone"] = params["phone"]
+    if params["amount"]:
+        st.query_params["amount"] = params["amount"]
+    st.rerun()
+
+
+def transfer_flow_url(data: dict) -> str:
+    params = extract_transfer_params(data)
+    query = {
+        "transfer": "1",
+        "name": params["name"],
+        "phone": params["phone"],
+    }
+    if params["amount"]:
+        query["amount"] = params["amount"]
+    return "?" + urlencode(query)
+
+
 def _asset_data_uri(path: Path) -> str:
     mime_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
     encoded = base64.b64encode(path.read_bytes()).decode("ascii")
@@ -510,12 +552,10 @@ def render_transfer_flow(data: dict):
         html,
     )
 
-    deeplink = data.get("deeplink", "")
-    phone_match = re.search(r"phone=([^&]+)", deeplink)
-    amount_match = re.search(r"amount=(\d+)", deeplink)
-    phone = phone_match.group(1) if phone_match else "09xxxxxxxx"
-    amount = f"{int(amount_match.group(1)):,}d" if amount_match else ""
-    recipient_name = data.get("recipient_name") or "Someone"
+    params = extract_transfer_params(data)
+    phone = params["phone"]
+    amount = f"{int(params['amount']):,}d" if params["amount"].isdigit() else ""
+    recipient_name = params["name"]
 
     html = html.replace("09xxxxxxxx", phone)
     html = html.replace("Someone", recipient_name)
@@ -542,6 +582,7 @@ def render_deeplink_card(data: dict):
     name     = data.get("recipient_name", "người nhận")
     m        = re.search(r"amount=(\d+)", deeplink)
     amount   = f"{int(m.group(1)):,}đ" if m else ""
+    transfer_url = transfer_flow_url(data)
 
     st.markdown(f"""
 <div style="
@@ -580,7 +621,7 @@ def render_deeplink_card(data: dict):
 
   <!-- Body -->
   <div style="padding:16px 20px 18px;">
-    <a href="?transfer=1" target="_self" style="
+    <a href="{transfer_url}" target="_self" style="
         display:flex;align-items:center;justify-content:center;gap:8px;
         background:linear-gradient(135deg,#F02891,#8B5CF6);
         color:#fff;text-decoration:none;
@@ -617,6 +658,12 @@ def render_warning(text: str):
 
 
 def get_current_transfer_payload() -> dict | None:
+    if query_param_is("transfer", "1"):
+        return {
+            "name": query_param_value("name", "Someone"),
+            "phone": query_param_value("phone", "09xxxxxxxx"),
+            "amount": query_param_value("amount"),
+        }
     if st.session_state.pending_deeplink:
         return st.session_state.pending_deeplink
     for msg in reversed(st.session_state.messages):
@@ -737,6 +784,7 @@ message_text = user_input or pending
 
 if message_text:
     st.session_state.messages.append({"role": "user", "content": message_text})
+    deeplink_data = None
     with st.chat_message("user", avatar="🧑"):
         st.markdown(message_text)
 
@@ -750,7 +798,7 @@ if message_text:
         deeplink_data = get_last_deeplink(agent)
         if deeplink_data:
             st.session_state.pending_deeplink = deeplink_data
-            render_deeplink_card(deeplink_data)
+            st.info("Đang mở giao diện chuyển tiền...")
 
         warning_kw = ["cảnh báo", "danh sách đen", "lừa đảo", "bị khóa", "rủi ro cao"]
         if any(kw in response.lower() for kw in warning_kw):
@@ -760,3 +808,5 @@ if message_text:
     if deeplink_data:
         record["deeplink"] = deeplink_data
     st.session_state.messages.append(record)
+    if deeplink_data:
+        open_transfer_flow(deeplink_data)
