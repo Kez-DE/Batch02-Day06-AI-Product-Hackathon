@@ -562,10 +562,8 @@ def render_transfer_flow(data: dict):
     if amount:
         html = html.replace("50.000d", amount, 1)
 
-    html = re.sub(r"</?(?:!doctype|html|head|body)[^>]*>", "", html, flags=re.IGNORECASE)
-    html = html.replace("<title>Document</title>", "")
-
-    st.markdown(html, unsafe_allow_html=True)
+    iframe_src = "data:text/html;charset=utf-8;base64," + base64.b64encode(html.encode("utf-8")).decode("ascii")
+    st.iframe(iframe_src, height=900)
     st.markdown('<div style="padding:12px 18px 28px;">', unsafe_allow_html=True)
     if st.button("Hoàn thành giao dịch", key="complete_transfer", use_container_width=True):
         st.session_state.messages = []
