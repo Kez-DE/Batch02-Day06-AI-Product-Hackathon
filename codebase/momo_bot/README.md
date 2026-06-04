@@ -17,11 +17,16 @@ pip install -r requirements.txt
 
 3. Cấu hình API Key:
 - Copy file `.env.example` thành `.env`
-- Điền `GEMINI_API_KEY` của bạn vào file `.env`. (Lấy key tại Google AI Studio)
+- Điền ít nhất một key vào file `.env`: `OPENROUTER_API_KEY`, `OPENAI_API_KEY` hoặc `GEMINI_API_KEY`.
 
 ## Khởi chạy
 
 Chạy script CLI để tương tác với Moni:
 ```bash
 python chat.py
+```
+
+Chạy giao diện web Streamlit:
+```bash
+python -m streamlit run web.py
 ```
