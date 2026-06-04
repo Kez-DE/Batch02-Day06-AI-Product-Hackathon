@@ -55,19 +55,43 @@ html, body, [class*="css"], [class*="st-"], button, input, textarea {
 [data-testid="stStatusWidget"],
 footer { display: none !important; }
 
-/* ─── App background — lavender gradient như MoMo ───────────── */
+/* ─── App phone shell — toàn bộ app chạy trong khung điện thoại ───────────── */
 .stApp {
+    background: #F5F1FB !important;
+    min-height: 100vh;
+}
+.block-container {
+    width: min(390px, calc(100vw - 20px)) !important;
+    max-width: min(390px, calc(100vw - 20px)) !important;
+    height: min(844px, calc(100vh - 24px)) !important;
+    min-height: min(844px, calc(100vh - 24px)) !important;
+    margin: 12px auto !important;
+    padding: 0 0 96px !important;
     background: linear-gradient(170deg,
         #FAFAFE 0%,
         #F3F0FF 30%,
         #EDE8FF 65%,
         #E3D8FF 100%) !important;
-    min-height: 100vh;
+    border: 10px solid #111216 !important;
+    border-radius: 38px !important;
+    box-shadow: 0 20px 52px rgba(38,20,60,.24) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+    scrollbar-width: none !important;
 }
-.block-container {
-    padding: 0 !important;
-    max-width: 680px !important;
-    background: transparent !important;
+.block-container::-webkit-scrollbar { display: none !important; }
+@media (max-width: 430px) {
+    .block-container {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        margin: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
 }
 
 /* ─── Sidebar — frosted glass, blend với gradient ───────────── */
@@ -222,6 +246,26 @@ div[data-testid="stBottom"],
     border-top: none !important;
     box-shadow: none !important;
 }
+[data-testid="stBottom"] {
+    width: min(370px, calc(100vw - 40px)) !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    transform: translateX(-50%) !important;
+    padding: 0 !important;
+    z-index: 1000 !important;
+}
+[data-testid="stBottom"] > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+}
+@media (max-width: 430px) {
+    [data-testid="stBottom"] {
+        width: calc(100vw - 24px) !important;
+        bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+    }
+}
 
 /* Pill ngoài — trắng */
 [data-testid="stChatInput"] > div,
@@ -368,74 +412,6 @@ st.markdown("""
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-#  SIDEBAR
-# ═══════════════════════════════════════════════════════════════════════════════
-with st.sidebar:
-    st.markdown("""
-<div style="
-    display:flex; align-items:center; gap:10px;
-    padding:4px 0 16px;
-    border-bottom:1px solid rgba(140,92,246,.12);
-    margin-bottom:4px;
-">
-  <div style="
-      width:36px; height:36px; flex-shrink:0;
-      background:linear-gradient(135deg,#F02891,#8B5CF6);
-      border-radius:10px;
-      display:flex;align-items:center;justify-content:center;
-      font-size:18px;
-      box-shadow:0 4px 12px rgba(240,40,145,.3);
-  ">✨</div>
-  <div>
-    <div style="font-size:14px;font-weight:700;color:#1A1A3E;">Moni</div>
-    <div style="font-size:10px;color:#9B9BB4;">Trợ thủ AI · MoMo</div>
-  </div>
-</div>
-""", unsafe_allow_html=True)
-
-    if st.button("＋  Cuộc trò chuyện mới", use_container_width=True, type="primary"):
-        st.session_state.messages = []
-        st.session_state.pending_deeplink = None
-        if "agent" in st.session_state:
-            del st.session_state["agent"]
-        st.rerun()
-
-    st.markdown("### Moni làm được gì?")
-    sb_card = "background:rgba(240,40,145,.06);border:1px solid rgba(240,40,145,.15);border-radius:10px;padding:10px 12px;display:flex;align-items:flex-start;gap:9px;margin-bottom:6px;"
-    sb_icon = "font-size:16px;margin-top:1px;"
-    sb_title = "font-size:12px;font-weight:600;color:#1A1A3E;"
-    sb_sub = "font-size:11px;color:#6B6B8F;margin-top:1px;"
-    st.markdown(f"""
-<div>
-<div style="{sb_card}"><span style="{sb_icon}">💸</span><div><div style="{sb_title}">Chuyển tiền</div><div style="{sb_sub}">Theo SĐT hoặc tên danh bạ</div></div></div>
-<div style="{sb_card}"><span style="{sb_icon}">🔒</span><div><div style="{sb_title}">Kiểm tra an toàn</div><div style="{sb_sub}">Tự động trước mỗi giao dịch</div></div></div>
-<div style="{sb_card}"><span style="{sb_icon}">👥</span><div><div style="{sb_title}">Tìm liên hệ</div><div style="{sb_sub}">Có dấu hoặc không dấu</div></div></div>
-</div>
-""", unsafe_allow_html=True)
-
-    st.markdown("### Thử ngay")
-    st.markdown("""
-<div style="display:flex;flex-direction:column;gap:5px;">
-  <div style="background:rgba(240,40,145,.07);border:1px solid rgba(240,40,145,.2);
-      border-radius:8px;padding:7px 11px;font-size:12px;color:#C4197A;">
-    💬 "Chuyển 100k cho mẹ"
-  </div>
-  <div style="background:rgba(240,40,145,.07);border:1px solid rgba(240,40,145,.2);
-      border-radius:8px;padding:7px 11px;font-size:12px;color:#C4197A;">
-    💬 "Gửi 50k tới 0912345678"
-  </div>
-  <div style="background:rgba(240,40,145,.07);border:1px solid rgba(240,40,145,.2);
-      border-radius:8px;padding:7px 11px;font-size:12px;color:#C4197A;">
-    💬 "Chuyển tiền cho anh Hùng"
-  </div>
-</div>
-""", unsafe_allow_html=True)
-
-    st.markdown("---")
-    st.caption("Moni v1.0 · Powered by AI")
-
-
-# ═══════════════════════════════════════════════════════════════════════════════
 #  INIT
 # ═══════════════════════════════════════════════════════════════════════════════
 from env_loader import load_env
@@ -487,6 +463,51 @@ def get_last_deeplink(agent: MoniAgent) -> dict | None:
             except Exception:
                 pass
     return None
+
+
+def get_last_contact_options(agent: MoniAgent) -> list[dict]:
+    for msg in reversed(agent.messages):
+        if (isinstance(msg, dict)
+                and msg.get("role") == "tool"
+                and msg.get("name") in {"lookup_personal_contact", "clarify_contact"}):
+            try:
+                result = json.loads(msg["content"])
+            except Exception:
+                continue
+            options = result.get("options") or []
+            if result.get("action") == "ask_user_to_choose" and len(options) > 1:
+                return options
+    return []
+
+
+def contact_choice_message(option: dict) -> str:
+    name = option.get("name", "người nhận")
+    phone = option.get("phone", "")
+    return f"Tôi chọn {name}, số điện thoại {phone}"
+
+
+def render_contact_choice_buttons(options: list[dict], key_prefix: str):
+    if not options:
+        return
+
+    st.markdown("""
+<div style="
+    font-size:12px;font-weight:700;color:#8B5CF6;
+    text-transform:uppercase;letter-spacing:.06em;
+    margin:8px 0 6px 16px;
+">Chọn người nhận</div>
+""", unsafe_allow_html=True)
+
+    for idx, option in enumerate(options):
+        name = option.get("name", "Người nhận")
+        phone = option.get("phone", "")
+        alias = option.get("alias", "")
+        province = option.get("province", "")
+        detail = " · ".join(x for x in [alias, province, phone] if x)
+        label = f"{name}  {detail}" if detail else name
+        if st.button(label, key=f"{key_prefix}_{idx}", use_container_width=True):
+            st.session_state["_pending"] = contact_choice_message(option)
+            st.rerun()
 
 
 def extract_transfer_params(data: dict) -> dict:
@@ -546,24 +567,80 @@ def render_transfer_flow(data: dict):
         return f'url("{_asset_data_uri(asset_path)}")'
 
     css = re.sub(r'url\(["\']?(\.\./images/[^)"\']+)["\']?\)', inline_css_asset, css)
-    html = re.sub(
-        r'<link href="\./css/main\.css" rel="stylesheet"\s*/?>',
-        f"<style>{css}</style>",
-        html,
-    )
+    body_match = re.search(r"<body[^>]*>(.*?)</body>", html, flags=re.IGNORECASE | re.DOTALL)
+    body_html = body_match.group(1).strip() if body_match else html
+    body_html = re.sub(r"</?div[^>]*class=[\"']v4_5[\"'][^>]*>", "", body_html, flags=re.IGNORECASE).strip()
 
     params = extract_transfer_params(data)
     phone = params["phone"]
     amount = f"{int(params['amount']):,}d" if params["amount"].isdigit() else ""
     recipient_name = params["name"]
 
-    html = html.replace("09xxxxxxxx", phone)
-    html = html.replace("Someone", recipient_name)
+    body_html = body_html.replace("09xxxxxxxx", phone)
+    body_html = body_html.replace("Someone", recipient_name)
     if amount:
-        html = html.replace("50.000d", amount, 1)
+        body_html = body_html.replace("50.000d", amount, 1)
+
+    html = f"""<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+  <style>
+    {css}
+    html, body {{
+      margin: 0;
+      min-height: 100%;
+      background: #f5f1fb;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }}
+    body {{
+      display: flex;
+      justify-content: center;
+      padding: 14px 0 24px;
+      overflow-x: hidden;
+    }}
+    .phone-shell {{
+      width: min(390px, 100vw);
+      height: 866px;
+      background: #111;
+      border-radius: 38px;
+      padding: 10px;
+      box-shadow: 0 18px 45px rgba(38, 20, 60, .24);
+      overflow: hidden;
+    }}
+    .phone-screen {{
+      width: 100%;
+      height: 100%;
+      background: rgba(239,232,237,1);
+      border-radius: 30px;
+      overflow: hidden;
+      position: relative;
+    }}
+    .transfer-scale {{
+      width: 648px;
+      height: 1440px;
+      transform: scale(0.571);
+      transform-origin: top left;
+    }}
+  </style>
+</head>
+<body>
+  <main class="phone-shell" aria-label="Giao diện chuyển tiền MoMo">
+    <section class="phone-screen">
+      <div class="transfer-scale">
+        <div class="v4_5">
+          {body_html}
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>"""
 
     iframe_src = "data:text/html;charset=utf-8;base64," + base64.b64encode(html.encode("utf-8")).decode("ascii")
-    st.iframe(iframe_src, height=900)
+    st.iframe(iframe_src, height=920)
     st.markdown('<div style="padding:12px 18px 28px;">', unsafe_allow_html=True)
     if st.button("Hoàn thành giao dịch", key="complete_transfer", use_container_width=True):
         st.session_state.messages = []
@@ -763,12 +840,14 @@ if not st.session_state.messages:
 """, unsafe_allow_html=True)
 
 # ─── Chat history ─────────────────────────────────────────────────────────────
-for msg in st.session_state.messages:
+for msg_idx, msg in enumerate(st.session_state.messages):
     avatar = "🧑" if msg["role"] == "user" else "✨"
     with st.chat_message(msg["role"], avatar=avatar):
         st.markdown(msg["content"])
         if msg.get("deeplink"):
             render_deeplink_card(msg["deeplink"])
+        if msg.get("choices"):
+            render_contact_choice_buttons(msg["choices"], f"choice_{msg_idx}")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
@@ -783,6 +862,7 @@ message_text = user_input or pending
 if message_text:
     st.session_state.messages.append({"role": "user", "content": message_text})
     deeplink_data = None
+    choice_options = []
     with st.chat_message("user", avatar="🧑"):
         st.markdown(message_text)
 
@@ -794,9 +874,12 @@ if message_text:
         st.markdown(response)
 
         deeplink_data = get_last_deeplink(agent)
+        choice_options = get_last_contact_options(agent)
         if deeplink_data:
             st.session_state.pending_deeplink = deeplink_data
             st.info("Đang mở giao diện chuyển tiền...")
+        elif choice_options:
+            render_contact_choice_buttons(choice_options, f"choice_current_{len(st.session_state.messages)}")
 
         warning_kw = ["cảnh báo", "danh sách đen", "lừa đảo", "bị khóa", "rủi ro cao"]
         if any(kw in response.lower() for kw in warning_kw):
@@ -805,6 +888,8 @@ if message_text:
     record = {"role": "assistant", "content": response}
     if deeplink_data:
         record["deeplink"] = deeplink_data
+    if choice_options:
+        record["choices"] = choice_options
     st.session_state.messages.append(record)
     if deeplink_data:
         open_transfer_flow(deeplink_data)
