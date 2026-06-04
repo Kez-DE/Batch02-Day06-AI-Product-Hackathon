@@ -572,15 +572,24 @@ def render_transfer_flow(data: dict):
     body_html = re.sub(r"</?div[^>]*class=[\"']v4_5[\"'][^>]*>", "", body_html, flags=re.IGNORECASE).strip()
 
     params = extract_transfer_params(data)
-    phone = params["phone"]
-    amount = f"{int(params['amount']):,}d" if params["amount"].isdigit() else ""
-    recipient_name = params["name"]
+    phone = params.get("phone", "09xxxxxxxx")
+    recipient_name = params.get("name", "Someone")
+    amount_raw = params.get("amount", "")
 
+    # Thay thế Tên và SĐT
     body_html = body_html.replace("09xxxxxxxx", phone)
     body_html = body_html.replace("Someone", recipient_name)
-    if amount:
-        body_html = body_html.replace("50.000d", amount, 1)
 
+    # 🔴 BẮT ĐẦU PHẦN SỬA ĐỔI SỐ TIỀN 🔴
+    if amount_raw and amount_raw.isdigit():
+        formatted_amount = f"{int(amount_raw):,}đ".replace(",", ".")
+        body_html = body_html.replace("{AMOUNT_PLACEHOLDER}", formatted_amount)
+    else:
+        input_html = '<input type="text" class="amount-input" placeholder="0đ" />'
+        body_html = body_html.replace("{AMOUNT_PLACEHOLDER}", input_html)
+    # 🔴 KẾT THÚC PHẦN SỬA ĐỔI SỐ TIỀN 🔴
+
+    # Lưu ý: Các block CSS tĩnh bên dưới đã được bọc bằng {{ }} để tương thích với f-string
     html = f"""<!doctype html>
 <html lang="vi">
 <head>
@@ -589,6 +598,24 @@ def render_transfer_flow(data: dict):
   <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
   <style>
     {css}
+
+    /* CSS cho ô nhập tiền */
+    .amount-input {{
+        width: 100% !important;
+        height: 100% !important;
+        font-size: 36px !important;
+        font-weight: 700 !important;
+        color: #1A1A3E !important;
+        background: transparent !important;
+        border: none !important;
+        outline: none !important;
+        text-align: center !important;
+        font-family: 'Inter', sans-serif !important;
+    }}
+    .amount-input::placeholder {{
+        color: #A89FC8 !important; 
+    }}
+
     html, body {{
       margin: 0;
       min-height: 100%;
@@ -650,8 +677,6 @@ def render_transfer_flow(data: dict):
         st.query_params.clear()
         st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
-
-
 def render_deeplink_card(data: dict):
     deeplink = data.get("deeplink", "")
     name     = data.get("recipient_name", "người nhận")

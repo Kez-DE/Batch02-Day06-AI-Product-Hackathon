@@ -16,3 +16,417 @@ LiteLLM completion() model= meta-llama/llama-3-8b-instruct:free; provider = open
 2026-06-04 14:45:27,823 - [INFO] - 
 LiteLLM completion() model= gemini-2.5-flash; provider = gemini
 2026-06-04 14:45:28,072 - [ERROR] - ❌ SYSTEM ERROR: Tất cả các LLM đều bị lỗi hoặc đã hết hạn mức!
+2026-06-04 15:56:49,753 - [INFO] - 👤 USER INPUT: chuyển tiền cho cậu tuân
+2026-06-04 15:56:49,843 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 15:56:52,063 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 15:56:52,066 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'cậu tuân'})
+2026-06-04 15:56:52,066 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "use_contact", "options": [{"name": "Cao Hoài Tuân", "phone": "0325760048", "alias": "Cậu Tuân", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 15:56:52,067 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 15:56:52,990 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 15:56:52,993 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0325760048'})
+2026-06-04 15:56:52,993 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Cao Hoài Tuân", "message": "Số điện thoại an toàn. Người nhận: Cao Hoài Tuân. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 15:56:52,995 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 15:56:54,425 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 15:56:54,428 - [INFO] - 🤖 AI RESPONSE: Số điện thoại của Cậu Tuân là 0325760048 và đã được xác nhận an toàn. Bạn muốn chuyển số tiền bao nhiêu cho Cậu Tuân?
+2026-06-04 15:57:52,303 - [INFO] - 👤 USER INPUT: 50000
+2026-06-04 15:57:52,309 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 15:57:53,790 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 15:57:53,794 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0325760048', 'amount': 50000})
+2026-06-04 15:57:53,794 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0325760048&amount=50000", "recipient_name": "Cao Hoài Tuân", "phone_number": "0325760048", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Cao Hoài Tuân..."}
+2026-06-04 15:57:53,797 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 15:57:54,947 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 15:57:54,949 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới Cậu Tuân với số tiền 50,000 VNĐ. Bạn hãy kiểm tra và xác nhận giao dịch nhé!
+2026-06-04 16:08:41,486 - [INFO] - 👤 USER INPUT: Chuyển 200k cho bạn Lan
+2026-06-04 16:08:41,488 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:08:42,720 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:08:42,723 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'Lan'})
+2026-06-04 16:08:42,724 - [INFO] - ✅ TOOL RESULT: {"status": "not_found", "message": "Không tìm thấy 'Lan' trong danh bạ cá nhân. Có thể thử `clarify_contact` hoặc hỏi người dùng số điện thoại cụ thể."}
+2026-06-04 16:08:42,726 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:08:44,065 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:08:44,068 - [INFO] - 🔧 TOOL CALL: clarify_contact({'name_hint': 'Lan'})
+2026-06-04 16:08:44,070 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "ask_user_to_choose", "options": [{"name": "Triệu Thanh Lan", "phone": "0817327148", "province": "Cà Mau"}, {"name": "Chữ Ngọc Lan Uyên", "phone": "0786735428", "province": "Khánh Hòa"}, {"name": "Hoàng Gia Thảo Lan", "phone": "0898942559", "province": "Thái Bình"}, {"name": "Mạc Thanh Lan", "phone": "0790170916", "province": "Đà Nẵng"}, {"name": "Võ Thị Lan", "phone": "0895333258", "province": "Thừa Thiên Huế"}], "message": "Hãy hiển thị các lựa chọn này dưới dạng nút bấm (button) cho người dùng chọn."}
+2026-06-04 16:08:44,072 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:08:47,446 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:08:47,446 - [INFO] - 🤖 AI RESPONSE: Tôi đã tìm thấy một số người tên "Lan" trong danh bạ của bạn. Bạn vui lòng chọn một trong các lựa chọn sau để chuyển tiền:
+
+1. **Triệu Thanh Lan** - 0817327148 (Cà Mau)
+2. **Chữ Ngọc Lan Uyên** - 0786735428 (Khánh Hòa)
+3. **Hoàng Gia Thảo Lan** - 0898942559 (Thái Bình)
+4. **Mạc Thanh Lan** - 0790170916 (Đà Nẵng)
+5. **Võ Thị Lan** - 0895333258 (Thừa Thiên Huế)
+
+Bạn muốn chuyển tiền cho ai?
+2026-06-04 16:19:23,463 - [INFO] - 👤 USER INPUT: Chuyển tiền cho con
+2026-06-04 16:19:23,562 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:19:26,114 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:19:26,117 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'con'})
+2026-06-04 16:19:26,118 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "ask_user_to_choose", "options": [{"name": "Mỹ Gia Hiếu", "phone": "0936768999", "alias": "Con trai", "source": "personal_phonebook"}, {"name": "Đinh Tú Khánh My", "phone": "0339830603", "alias": "Con gái", "source": "personal_phonebook"}, {"name": "Trần Công Hưng", "phone": "0893962773", "alias": "Hưng Voi", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 16:19:26,120 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:19:28,606 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:19:28,608 - [INFO] - 🤖 AI RESPONSE: Bạn có 3 lựa chọn để chuyển tiền cho "con":
+
+1. **Mỹ Gia Hiếu** - Số điện thoại: 0936768999
+2. **Đinh Tú Khánh My** - Số điện thoại: 0339830603
+3. **Trần Công Hưng** - Số điện thoại: 0893962773
+
+Bạn muốn chuyển tiền cho ai trong số này?
+2026-06-04 16:20:26,432 - [INFO] - 👤 USER INPUT: Tôi chọn Mỹ Gia Hiếu, số điện thoại 0936768999
+2026-06-04 16:20:26,433 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:20:27,648 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:20:27,651 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0936768999'})
+2026-06-04 16:20:27,651 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Mỹ Gia Hiếu", "message": "Số điện thoại an toàn. Người nhận: Mỹ Gia Hiếu. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 16:20:27,653 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:20:28,696 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:20:28,698 - [INFO] - 🤖 AI RESPONSE: Số điện thoại 0936768999 của Mỹ Gia Hiếu là an toàn. Bạn muốn chuyển số tiền bao nhiêu?
+2026-06-04 16:20:35,203 - [INFO] - 👤 USER INPUT: 50k
+2026-06-04 16:20:35,205 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:20:36,367 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:20:36,370 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0936768999', 'amount': 50000})
+2026-06-04 16:20:36,370 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0936768999&amount=50000", "recipient_name": "Mỹ Gia Hiếu", "phone_number": "0936768999", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Mỹ Gia Hiếu..."}
+2026-06-04 16:20:36,372 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:20:37,567 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:20:37,569 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới Mỹ Gia Hiếu với số tiền 50.000 VNĐ. Bạn hãy kiểm tra và xác nhận giao dịch nhé!
+2026-06-04 16:22:59,070 - [INFO] - 👤 USER INPUT: Chuyển 500k cho số 0785358586
+
+2026-06-04 16:22:59,073 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:23:00,528 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:23:00,529 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0785358586', 'amount': 500000})
+2026-06-04 16:23:00,530 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Phạm Mai Hương", "message": "Số điện thoại an toàn. Người nhận: Phạm Mai Hương. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 16:23:00,531 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:23:01,574 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:23:01,576 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0785358586', 'amount': 500000})
+2026-06-04 16:23:01,576 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0785358586&amount=500000", "recipient_name": "Phạm Mai Hương", "phone_number": "0785358586", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Phạm Mai Hương..."}
+2026-06-04 16:23:01,578 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:23:02,834 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:23:02,837 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới **Phạm Mai Hương** với số tiền **500.000 VNĐ**. Bạn hãy kiểm tra và xác nhận giao dịch nhé!
+2026-06-04 16:23:41,119 - [INFO] - 👤 USER INPUT: CHuyển tiền cho số 0785358586
+
+2026-06-04 16:23:41,120 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:23:42,046 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:23:42,047 - [INFO] - 🤖 AI RESPONSE: Bạn muốn chuyển số tiền bao nhiêu cho số điện thoại 0785358586?
+2026-06-04 16:23:51,303 - [INFO] - 👤 USER INPUT: 50k
+2026-06-04 16:23:51,305 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:23:52,770 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:23:52,772 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0785358586', 'amount': 50000})
+2026-06-04 16:23:52,772 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Phạm Mai Hương", "message": "Số điện thoại an toàn. Người nhận: Phạm Mai Hương. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 16:23:52,774 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:23:53,665 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:23:53,668 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0785358586', 'amount': 50000})
+2026-06-04 16:23:53,669 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0785358586&amount=50000", "recipient_name": "Phạm Mai Hương", "phone_number": "0785358586", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Phạm Mai Hương..."}
+2026-06-04 16:23:53,670 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:23:54,829 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:23:54,832 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới Phạm Mai Hương với số tiền 50.000 VNĐ. Bạn hãy kiểm tra và xác nhận giao dịch nhé!
+2026-06-04 16:36:04,372 - [INFO] - 👤 USER INPUT: Chuyển 50k cho cậu tuân
+2026-06-04 16:36:04,437 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:36:06,428 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:36:06,431 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'cậu tuân'})
+2026-06-04 16:36:06,432 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "use_contact", "options": [{"name": "Cao Hoài Tuân", "phone": "0325760048", "alias": "Cậu Tuân", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 16:36:06,434 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:36:07,302 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:36:07,304 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0325760048', 'amount': 50000})
+2026-06-04 16:36:07,304 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Cao Hoài Tuân", "message": "Số điện thoại an toàn. Người nhận: Cao Hoài Tuân. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 16:36:07,306 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:36:08,100 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:36:08,101 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0325760048', 'amount': 50000})
+2026-06-04 16:36:08,101 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0325760048&amount=50000", "recipient_name": "Cao Hoài Tuân", "phone_number": "0325760048", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Cao Hoài Tuân..."}
+2026-06-04 16:36:08,103 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:36:09,298 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:36:09,300 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới **Cao Hoài Tuân** với số tiền **50.000 VNĐ**. Bạn hãy kiểm tra và xác nhận giao dịch nhé!
+2026-06-04 16:36:41,917 - [INFO] - 👤 USER INPUT: Chuyển 2 triệu cho con trai
+2026-06-04 16:36:41,919 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:36:42,974 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:36:42,977 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'con trai'})
+2026-06-04 16:36:42,977 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "use_contact", "options": [{"name": "Mỹ Gia Hiếu", "phone": "0936768999", "alias": "Con trai", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 16:36:42,979 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:36:43,897 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:36:43,900 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0936768999', 'amount': 2000000})
+2026-06-04 16:36:43,901 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Mỹ Gia Hiếu", "message": "Số điện thoại an toàn. Người nhận: Mỹ Gia Hiếu. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 16:36:43,904 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:36:45,059 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:36:45,062 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0936768999', 'amount': 2000000})
+2026-06-04 16:36:45,062 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0936768999&amount=2000000", "recipient_name": "Mỹ Gia Hiếu", "phone_number": "0936768999", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Mỹ Gia Hiếu..."}
+2026-06-04 16:36:45,065 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:36:46,218 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:36:46,222 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới **Mỹ Gia Hiếu** với số tiền **2 triệu**. Bạn hãy kiểm tra và xác nhận giao dịch nhé!
+2026-06-04 16:39:37,902 - [INFO] - 👤 USER INPUT: Gửi 100.000đ tới 0912345678
+2026-06-04 16:39:37,905 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:39:39,108 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:39:39,111 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0912345678', 'amount': 100000})
+2026-06-04 16:39:39,111 - [INFO] - ✅ TOOL RESULT: {"safe": false, "reason": "Số điện thoại 0912345678 không tồn tại trong hệ thống MoMo hoặc danh bạ. Không thể thực hiện giao dịch.", "next_action": "abort_and_alert"}
+2026-06-04 16:39:39,112 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:39:40,254 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:39:40,256 - [INFO] - 🤖 AI RESPONSE: Số điện thoại 0912345678 không tồn tại trong hệ thống MoMo hoặc danh bạ. Bạn có muốn thử với số điện thoại khác không?
+2026-06-04 16:50:22,099 - [INFO] - 👤 USER INPUT: Chuyển 50k cho số 0785358586
+
+2026-06-04 16:50:22,101 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:50:24,356 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:50:24,360 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0785358586', 'amount': 50000})
+2026-06-04 16:50:24,360 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Phạm Mai Hương", "message": "Số điện thoại an toàn. Người nhận: Phạm Mai Hương. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 16:50:24,362 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:50:25,635 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:50:25,637 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0785358586', 'amount': 50000})
+2026-06-04 16:50:25,637 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0785358586&amount=50000", "recipient_name": "Phạm Mai Hương", "phone_number": "0785358586", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Phạm Mai Hương..."}
+2026-06-04 16:50:25,638 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:50:26,874 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:50:26,876 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới **Phạm Mai Hương** với số tiền **50,000 VNĐ**. Bạn hãy kiểm tra và xác nhận giao dịch nhé!
+2026-06-04 16:51:11,495 - [INFO] - 👤 USER INPUT: chuyển 2 triệu cho con trai
+2026-06-04 16:51:11,495 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:51:12,676 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:51:12,680 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'con trai'})
+2026-06-04 16:51:12,680 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "use_contact", "options": [{"name": "Mỹ Gia Hiếu", "phone": "0936768999", "alias": "Con trai", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 16:51:12,681 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:51:13,677 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:51:13,680 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0936768999', 'amount': 2000000})
+2026-06-04 16:51:13,681 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Mỹ Gia Hiếu", "message": "Số điện thoại an toàn. Người nhận: Mỹ Gia Hiếu. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 16:51:13,683 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:51:14,555 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:51:14,558 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0936768999', 'amount': 2000000})
+2026-06-04 16:51:14,559 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0936768999&amount=2000000", "recipient_name": "Mỹ Gia Hiếu", "phone_number": "0936768999", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Mỹ Gia Hiếu..."}
+2026-06-04 16:51:14,562 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:51:15,637 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:51:15,639 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới **Mỹ Gia Hiếu** với số tiền **2 triệu**. Bạn hãy kiểm tra và xác nhận giao dịch nhé!
+2026-06-04 16:51:30,339 - [INFO] - 👤 USER INPUT: Chuyển 50k cho mẹ
+2026-06-04 16:51:30,339 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:51:31,679 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:51:31,682 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'mẹ'})
+2026-06-04 16:51:31,683 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "ask_user_to_choose", "options": [{"name": "Phạm Mỹ Khánh", "phone": "0327383750", "alias": "Mẹ", "source": "personal_phonebook"}, {"name": "Tạ Thanh Tú", "phone": "0837307556", "alias": "Mẹ vợ", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 16:51:31,684 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:51:33,236 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:51:33,239 - [INFO] - 🤖 AI RESPONSE: Có hai người trong danh bạ của bạn có biệt danh "mẹ":
+
+1. **Phạm Mỹ Khánh** - Số điện thoại: 0327383750
+2. **Tạ Thanh Tú** - Số điện thoại: 0837307556 (Mẹ vợ)
+
+Bạn muốn chuyển tiền cho ai trong số này?
+2026-06-04 16:51:44,211 - [INFO] - 👤 USER INPUT: Tôi chọn Phạm Mỹ Khánh, số điện thoại 0327383750
+2026-06-04 16:51:44,213 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:51:46,567 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:51:46,570 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0327383750', 'amount': 50000})
+2026-06-04 16:51:46,571 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Phạm Mỹ Khánh", "message": "Số điện thoại an toàn. Người nhận: Phạm Mỹ Khánh. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 16:51:46,573 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:51:47,429 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:51:47,431 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0327383750', 'amount': 50000})
+2026-06-04 16:51:47,433 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0327383750&amount=50000", "recipient_name": "Phạm Mỹ Khánh", "phone_number": "0327383750", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Phạm Mỹ Khánh..."}
+2026-06-04 16:51:47,435 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:51:48,635 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:51:48,638 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới **Phạm Mỹ Khánh** với số tiền **50,000 VNĐ**. Bạn hãy kiểm tra và xác nhận giao dịch nhé!
+2026-06-04 16:52:20,682 - [INFO] - 👤 USER INPUT: CHuyển 50 triệu cho mẹ
+2026-06-04 16:52:20,689 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:52:21,695 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:52:21,696 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'mẹ'})
+2026-06-04 16:52:21,697 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "ask_user_to_choose", "options": [{"name": "Phạm Mỹ Khánh", "phone": "0327383750", "alias": "Mẹ", "source": "personal_phonebook"}, {"name": "Tạ Thanh Tú", "phone": "0837307556", "alias": "Mẹ vợ", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 16:52:21,699 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:52:23,163 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:52:23,166 - [INFO] - 🤖 AI RESPONSE: Có hai người trong danh bạ của bạn với tên "mẹ":
+
+1. **Phạm Mỹ Khánh** - Số điện thoại: 0327383750
+2. **Tạ Thanh Tú** - Số điện thoại: 0837307556 (Mẹ vợ)
+
+Bạn muốn chuyển tiền cho ai trong số này?
+2026-06-04 16:52:31,177 - [INFO] - 👤 USER INPUT: Tôi chọn Phạm Mỹ Khánh, số điện thoại 0327383750
+2026-06-04 16:52:31,179 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:52:32,598 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:52:32,601 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0327383750', 'amount': 50000000})
+2026-06-04 16:52:32,601 - [INFO] - ✅ TOOL RESULT: {"safe": false, "reason": "Số tiền 50,000,000 VND vượt quá hạn mức chuyển nhanh. Yêu cầu xác thực OTP hoặc khuôn mặt.", "next_action": "abort_and_alert"}
+2026-06-04 16:52:32,604 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:52:33,758 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:52:33,762 - [INFO] - 🤖 AI RESPONSE: Số tiền 50 triệu VND vượt quá hạn mức chuyển nhanh và cần xác thực OTP hoặc khuôn mặt. Bạn có muốn tiếp tục với giao dịch này không?
+2026-06-04 16:52:52,329 - [INFO] - 👤 USER INPUT: Chuyển 49 triệu cho mẹ
+2026-06-04 16:52:52,331 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:52:53,397 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:52:53,400 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'mẹ'})
+2026-06-04 16:52:53,400 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "ask_user_to_choose", "options": [{"name": "Phạm Mỹ Khánh", "phone": "0327383750", "alias": "Mẹ", "source": "personal_phonebook"}, {"name": "Tạ Thanh Tú", "phone": "0837307556", "alias": "Mẹ vợ", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 16:52:53,401 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:52:55,276 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:52:55,279 - [INFO] - 🤖 AI RESPONSE: Có hai người trong danh bạ của bạn với tên "mẹ":
+
+1. **Phạm Mỹ Khánh** - Số điện thoại: 0327383750
+2. **Tạ Thanh Tú** - Số điện thoại: 0837307556 (Mẹ vợ)
+
+Bạn muốn chuyển tiền cho ai trong số này?
+2026-06-04 16:52:59,640 - [INFO] - 👤 USER INPUT: Tôi chọn Phạm Mỹ Khánh, số điện thoại 0327383750
+2026-06-04 16:52:59,641 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:53:00,596 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:53:00,598 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0327383750', 'amount': 49000000})
+2026-06-04 16:53:00,599 - [INFO] - ✅ TOOL RESULT: {"safe": false, "reason": "Số tiền 49,000,000 VND vượt quá hạn mức chuyển nhanh. Yêu cầu xác thực OTP hoặc khuôn mặt.", "next_action": "abort_and_alert"}
+2026-06-04 16:53:00,600 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:53:01,764 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:53:01,768 - [INFO] - 🤖 AI RESPONSE: Số tiền 49 triệu VND vượt quá hạn mức chuyển nhanh. Bạn sẽ cần xác thực bằng OTP hoặc khuôn mặt để thực hiện giao dịch này. Bạn có muốn tiếp tục không?
+2026-06-04 16:53:47,428 - [INFO] - 👤 USER INPUT: Chuyển 500 đô cho mẹ
+2026-06-04 16:53:47,431 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:53:49,036 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:53:49,039 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'mẹ'})
+2026-06-04 16:53:49,039 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "ask_user_to_choose", "options": [{"name": "Phạm Mỹ Khánh", "phone": "0327383750", "alias": "Mẹ", "source": "personal_phonebook"}, {"name": "Tạ Thanh Tú", "phone": "0837307556", "alias": "Mẹ vợ", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 16:53:49,041 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:53:51,304 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:53:51,307 - [INFO] - 🤖 AI RESPONSE: Có hai người trong danh bạ của bạn có tên liên quan đến "mẹ":
+
+1. **Phạm Mỹ Khánh** - Số điện thoại: 0327383750
+2. **Tạ Thanh Tú** - Số điện thoại: 0837307556 (Mẹ vợ)
+
+Bạn muốn chuyển tiền cho ai trong số này?
+2026-06-04 16:53:56,616 - [INFO] - 👤 USER INPUT: Tôi chọn Phạm Mỹ Khánh, số điện thoại 0327383750
+2026-06-04 16:53:56,616 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:53:58,073 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:53:58,077 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0327383750', 'amount': 5000000})
+2026-06-04 16:53:58,078 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Phạm Mỹ Khánh", "message": "Số điện thoại an toàn. Người nhận: Phạm Mỹ Khánh. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 16:53:58,080 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:53:59,317 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:53:59,321 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0327383750', 'amount': 5000000})
+2026-06-04 16:53:59,321 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0327383750&amount=5000000", "recipient_name": "Phạm Mỹ Khánh", "phone_number": "0327383750", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Phạm Mỹ Khánh..."}
+2026-06-04 16:53:59,323 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:54:00,901 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:54:00,903 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới **Phạm Mỹ Khánh** với số tiền **500 đô** (5,000,000 VNĐ)... 
+
+[Nhấn vào đây để xác nhận chuyển tiền](momo://transfer?phone=0327383750&amount=5000000).
+2026-06-04 16:54:22,565 - [INFO] - 👤 USER INPUT: Gửi 100.000đ tới 0912345678
+2026-06-04 16:54:22,566 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:54:23,677 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:54:23,680 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0912345678', 'amount': 100000})
+2026-06-04 16:54:23,680 - [INFO] - ✅ TOOL RESULT: {"safe": false, "reason": "Số điện thoại 0912345678 không tồn tại trong hệ thống MoMo hoặc danh bạ. Không thể thực hiện giao dịch.", "next_action": "abort_and_alert"}
+2026-06-04 16:54:23,681 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:54:24,757 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:54:24,759 - [INFO] - 🤖 AI RESPONSE: Số điện thoại 0912345678 không tồn tại trong hệ thống MoMo hoặc danh bạ. Bạn có muốn thử với số điện thoại khác không?
+2026-06-04 16:57:32,159 - [INFO] - 👤 USER INPUT: giới hạn chuỷen tiền nhanh là bao nhiêu
+2026-06-04 16:57:32,161 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 16:57:33,963 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 16:57:33,964 - [INFO] - 🤖 AI RESPONSE: Giới hạn chuyển tiền nhanh qua MoMo thường là 20 triệu đồng mỗi ngày. Tuy nhiên, bạn nên kiểm tra trong ứng dụng để biết thông tin chính xác và cập nhật nhất. Nếu bạn cần hỗ trợ chuyển tiền, hãy cho tôi biết!
+2026-06-04 17:00:11,182 - [INFO] - 👤 USER INPUT: chuyển con trai 19 triệu
+2026-06-04 17:00:11,184 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:00:12,560 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:00:12,563 - [INFO] - 🔧 TOOL CALL: clarify_contact({'name_hint': 'con trai'})
+2026-06-04 17:00:12,592 - [INFO] - ✅ TOOL RESULT: {"status": "not_found", "message": "Không tìm thấy ai tên 'con trai' trong danh bạ. Vui lòng hỏi người dùng số điện thoại cụ thể."}
+2026-06-04 17:00:12,594 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:00:13,642 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:00:13,644 - [INFO] - 🤖 AI RESPONSE: Tôi không tìm thấy thông tin về "con trai" trong danh bạ của bạn. Bạn có thể cung cấp số điện thoại cụ thể để tôi hỗ trợ chuyển tiền không?
+2026-06-04 17:00:33,314 - [INFO] - 👤 USER INPUT: chuyển 19 triệu cho con trai
+2026-06-04 17:00:33,314 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:00:35,163 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:00:35,166 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'con trai'})
+2026-06-04 17:00:35,167 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "use_contact", "options": [{"name": "Mỹ Gia Hiếu", "phone": "0936768999", "alias": "Con trai", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 17:00:35,169 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:00:36,486 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:00:36,488 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0936768999', 'amount': 19000000})
+2026-06-04 17:00:36,488 - [INFO] - ✅ TOOL RESULT: {"safe": false, "reason": "Số tiền 19,000,000 VND vượt quá hạn mức chuyển nhanh. Yêu cầu xác thực OTP hoặc khuôn mặt.", "next_action": "abort_and_alert"}
+2026-06-04 17:00:36,490 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:00:38,163 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:00:38,166 - [INFO] - 🤖 AI RESPONSE: Số tiền 19 triệu VND vượt quá hạn mức chuyển nhanh. Bạn sẽ cần xác thực bằng OTP hoặc khuôn mặt để thực hiện giao dịch này. Bạn có muốn tiếp tục không?
+2026-06-04 17:01:13,392 - [INFO] - 👤 USER INPUT: Chuyển 19 triệu cho con trai
+2026-06-04 17:01:13,397 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:01:15,005 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:01:15,008 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'con trai'})
+2026-06-04 17:01:15,008 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "use_contact", "options": [{"name": "Mỹ Gia Hiếu", "phone": "0936768999", "alias": "Con trai", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 17:01:15,009 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:01:16,131 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:01:16,134 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0936768999', 'amount': 19000000})
+2026-06-04 17:01:16,134 - [INFO] - ✅ TOOL RESULT: {"safe": false, "reason": "Số tiền 19,000,000 VND vượt quá hạn mức chuyển nhanh. Yêu cầu xác thực OTP hoặc khuôn mặt.", "next_action": "abort_and_alert"}
+2026-06-04 17:01:16,136 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:01:17,565 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:01:17,567 - [INFO] - 🤖 AI RESPONSE: Số tiền 19 triệu VND vượt quá hạn mức chuyển nhanh. Bạn sẽ cần xác thực bằng OTP hoặc khuôn mặt để thực hiện giao dịch này. Bạn có muốn tiếp tục không?
+2026-06-04 17:02:13,088 - [INFO] - 👤 USER INPUT: Chuyển 19 triệu cho con trai
+2026-06-04 17:02:13,164 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:02:15,174 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:02:15,180 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'con trai'})
+2026-06-04 17:02:15,181 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "use_contact", "options": [{"name": "Mỹ Gia Hiếu", "phone": "0936768999", "alias": "Con trai", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 17:02:15,182 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:02:16,163 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:02:16,165 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0936768999', 'amount': 19000000})
+2026-06-04 17:02:16,166 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Mỹ Gia Hiếu", "message": "Số điện thoại an toàn. Người nhận: Mỹ Gia Hiếu. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 17:02:16,167 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:02:18,044 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:02:18,045 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0936768999', 'amount': 19000000})
+2026-06-04 17:02:18,045 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0936768999&amount=19000000", "recipient_name": "Mỹ Gia Hiếu", "phone_number": "0936768999", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Mỹ Gia Hiếu..."}
+2026-06-04 17:02:18,047 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:02:19,372 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:02:19,375 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới **Mỹ Gia Hiếu** với số tiền **19 triệu**. Bạn hãy kiểm tra và xác nhận giao dịch nhé!
+2026-06-04 17:02:43,060 - [INFO] - 👤 USER INPUT: Chuyển 49 triệu cho con trai
+2026-06-04 17:02:43,060 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:02:44,243 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:02:44,245 - [INFO] - 🔧 TOOL CALL: lookup_personal_contact({'name_hint': 'con trai'})
+2026-06-04 17:02:44,246 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "use_contact", "options": [{"name": "Mỹ Gia Hiếu", "phone": "0936768999", "alias": "Con trai", "source": "personal_phonebook"}], "message": "Nếu chỉ có một kết quả phù hợp, dùng số này để gọi safety_check. Nếu có nhiều kết quả, hỏi người dùng chọn đúng người nhận."}
+2026-06-04 17:02:44,246 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:02:45,287 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:02:45,290 - [INFO] - 🔧 TOOL CALL: safety_check({'phone_number': '0936768999', 'amount': 49000000})
+2026-06-04 17:02:45,291 - [INFO] - ✅ TOOL RESULT: {"safe": true, "recipient_name": "Mỹ Gia Hiếu", "message": "Số điện thoại an toàn. Người nhận: Mỹ Gia Hiếu. Có thể tiến hành mở màn hình chuyển tiền.", "next_action": "call_execute_momo_transfer"}
+2026-06-04 17:02:45,292 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:02:46,322 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:02:46,325 - [INFO] - 🔧 TOOL CALL: execute_momo_transfer({'phone_number': '0936768999', 'amount': 49000000})
+2026-06-04 17:02:46,325 - [INFO] - ✅ TOOL RESULT: {"status": "success", "action": "trigger_deeplink", "deeplink": "momo://transfer?phone=0936768999&amount=49000000", "recipient_name": "Mỹ Gia Hiếu", "phone_number": "0936768999", "message_to_user": "Đang mở màn hình chuyển tiền MoMo tới Mỹ Gia Hiếu..."}
+2026-06-04 17:02:46,328 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 17:02:47,634 - [INFO] - Wrapper: Completed Call, calling success_handler
+2026-06-04 17:02:47,638 - [INFO] - 🤖 AI RESPONSE: Đang mở màn hình chuyển tiền MoMo tới **Mỹ Gia Hiếu** với số tiền **49 triệu**. Bạn hãy kiểm tra và xác nhận giao dịch nhé!

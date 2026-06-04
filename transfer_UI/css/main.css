@@ -1681,3 +1681,16 @@ body {
   opacity: 1;
   text-align: left;
 }
+/* Định dạng khu vực hiển thị số tiền */
+.v4_107 {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important; /* Hoặc flex-end nếu bạn muốn căn phải */
+    width: 100% !important;
+    height: 100% !important;
+    font-size: 36px !important; /* Cỡ chữ to nổi bật */
+    font-weight: 700 !important;
+    color: #1A1A3E !important; /* Màu đen/xanh đậm */
+    background: none !important; /* Xóa bỏ ảnh background cũ của Figma nếu có */
+    position: static !important;
+}

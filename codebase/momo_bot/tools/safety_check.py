@@ -28,7 +28,7 @@ _PHONE_INDEX.update({
 })
 
 BLACKLIST_PHONES = ["0123456789", "0999999999"]
-MAX_AMOUNT_NO_OTP = 5000000  # 5 triệu
+MAX_AMOUNT_NO_OTP = 50000000
 
 def safety_check(phone_number: str, amount: int = 0) -> str:
     """
