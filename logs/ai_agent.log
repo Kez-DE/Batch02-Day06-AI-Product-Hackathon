@@ -1,0 +1,18 @@
+2026-06-04 14:41:07,243 - [INFO] - 👤 USER INPUT: Chuyển 200k cho bạn Lan
+2026-06-04 14:41:07,318 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 14:41:11,864 - [INFO] - Retrying request to /chat/completions in 0.457675 seconds
+2026-06-04 14:41:12,688 - [INFO] - Retrying request to /chat/completions in 0.953777 seconds
+2026-06-04 14:41:14,085 - [INFO] - 
+LiteLLM completion() model= gemini-2.5-flash; provider = gemini
+2026-06-04 14:41:14,412 - [ERROR] - ❌ SYSTEM ERROR: Tất cả các LLM đều bị lỗi hoặc đã hết hạn mức!
+2026-06-04 14:45:23,806 - [INFO] - 👤 USER INPUT: Chuyển 200k cho bạn Lan
+2026-06-04 14:45:23,831 - [INFO] - 
+LiteLLM completion() model= gpt-4o-mini; provider = openai
+2026-06-04 14:45:24,968 - [INFO] - Retrying request to /chat/completions in 0.490763 seconds
+2026-06-04 14:45:25,833 - [INFO] - Retrying request to /chat/completions in 0.818776 seconds
+2026-06-04 14:45:27,072 - [INFO] - 
+LiteLLM completion() model= meta-llama/llama-3-8b-instruct:free; provider = openrouter
+2026-06-04 14:45:27,823 - [INFO] - 
+LiteLLM completion() model= gemini-2.5-flash; provider = gemini
+2026-06-04 14:45:28,072 - [ERROR] - ❌ SYSTEM ERROR: Tất cả các LLM đều bị lỗi hoặc đã hết hạn mức!
