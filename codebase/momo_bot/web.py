@@ -346,6 +346,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+
 # ═══════════════════════════════════════════════════════════════════════════════
 #  SIDEBAR
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -551,9 +552,20 @@ SUGGESTIONS = [
 
 st.markdown('<div style="padding:0 16px 100px;">', unsafe_allow_html=True)
 
+col_greet, col_new = st.columns([3, 1])
+with col_new:
+    st.markdown('<div style="padding-top:14px;">', unsafe_allow_html=True)
+    if st.button("＋ Cuộc trò chuyện mới", key="new_chat_btn", use_container_width=True):
+        st.session_state.messages = []
+        st.session_state.pending_deeplink = None
+        if "agent" in st.session_state:
+            del st.session_state["agent"]
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+
 if not st.session_state.messages:
-    # Greeting — như "Chào Long, Moni có thể giúp gì cho bạn?"
-    st.markdown("""
+    with col_greet:
+        st.markdown("""
 <div style="padding:10px 4px 24px; display:flex; align-items:flex-start; gap:14px;">
   <div style="
       width:48px; height:48px; flex-shrink:0;
